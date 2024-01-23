@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Progress Hud -->
+    <!-- LinearLayout -->
+    <item name="progress_background_alpha" format="float" type="dimen">0.95</item>
+</resources>

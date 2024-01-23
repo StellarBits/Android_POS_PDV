@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="token"
+            type="com.stellarbitsapps.androidpdv.database.entity.Tokens" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/bt_token"
+            android:layout_width="170dp"
+            android:layout_height="120dp"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:text="Button"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_counter"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/round_background"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+
+</layout>

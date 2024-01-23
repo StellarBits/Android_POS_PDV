@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Android PDV</string>
+    <string name="register_tokens_menu_text">Cadastrar fichas</string>
+    <string name="config_tokens_layout_menu_text">Configurar layout das fichas</string>
+    <string name="reprint_report_menu_text">Reimprimir relatórios</string>
+    <string name="about_us_layout_menu_text">Sobre nós</string>
+</resources>

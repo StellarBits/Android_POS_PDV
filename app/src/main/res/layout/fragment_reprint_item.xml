@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="report"
+            type="com.stellarbitsapps.androidpdv.database.entity.Report" />
+
+        <variable
+            name="listener"
+            type="com.stellarbitsapps.androidpdv.ui.adapter.ReprintListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:onClick="@{() -> listener.onClick(report)}"
+        android:background="@drawable/reprint_click_ripple">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="@{Integer.toString(report.id)}"
+                android:textSize="18sp"
+                tools:text="1" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="1dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textSize="18sp"
+                bind:date="@{report.initialDate}"
+                tools:text="19/10/2023 15:51:36" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="1dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textSize="18sp"
+                bind:date="@{report.finalDate}"
+                tools:text="19/10/2023 15:51:36" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="1dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textSize="18sp"
+                bind:value="@{report.initialCash}"
+                tools:text="R$ 1.000,00" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="1dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textSize="18sp"
+                bind:value="@{report.finalCash}"
+                tools:text="R$ 540,00" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="1dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp" />
+
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/materialDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+    </LinearLayout>
+
+</layout>

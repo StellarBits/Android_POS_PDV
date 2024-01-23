@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Progress Hud -->
+    <!-- LinearLayout -->
+    <dimen name="progress_background_horizontal_padding">30dp</dimen>
+    <dimen name="progress_background_vertical_padding">20dp</dimen>
+
+    <!-- ImageView -->
+    <dimen name="progress_loading_imageview_bottom_margin">15dp</dimen>
+</resources>

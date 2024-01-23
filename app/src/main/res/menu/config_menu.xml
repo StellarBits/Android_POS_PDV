@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/settings">
+        <item
+            android:id="@+id/register_tokens"
+            android:orderInCategory="100"
+            android:title="@string/register_tokens_menu_text"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/configure_tokens_layout"
+            android:orderInCategory="101"
+            android:title="@string/config_tokens_layout_menu_text"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/reprint_report"
+            android:orderInCategory="102"
+            android:title="@string/reprint_report_menu_text"
+            app:showAsAction="never" />
+    </group>
+
+    <group android:id="@+id/about">
+        <item
+            android:id="@+id/about_us"
+            android:orderInCategory="102"
+            android:title="@string/about_us_layout_menu_text"
+            app:showAsAction="never" />
+
+    </group>
+</menu>
