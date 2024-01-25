@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingVertical="30dp"
     android:background="@color/cardview_dark_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
         android:paddingHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +24,7 @@
             android:src="@drawable/about_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toStartOf="parent">
 
         </ImageView>
 
@@ -31,25 +32,23 @@
             android:id="@+id/tv_website_about"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="20dp"
             android:text="www.seviin.com.br"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tv_email_about"
+            app:layout_constraintBottom_toBottomOf="@+id/img_email_about"
             app:layout_constraintStart_toEndOf="@+id/img_email_about"
-            app:layout_constraintTop_toBottomOf="@+id/tv_telephone_about"
-            app:layout_constraintVertical_bias="0.492" />
+            app:layout_constraintTop_toTopOf="@+id/img_email_about" />
 
         <ImageView
             android:id="@+id/img_email_about"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/baseline_email_24"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_website_about"
-            app:layout_constraintStart_toStartOf="@+id/img_website_about"
-            app:layout_constraintTop_toTopOf="@+id/tv_website_about"
-            app:layout_constraintVertical_bias="0.441">
+            app:layout_constraintBottom_toTopOf="@+id/img_website_about"
+            app:layout_constraintStart_toStartOf="@+id/img_about_logo"
+            app:layout_constraintTop_toBottomOf="@+id/img_telephone_about">
 
         </ImageView>
 
@@ -57,12 +56,11 @@
             android:id="@+id/img_website_about"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/baseline_desktop_windows_24"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_email_about"
-            app:layout_constraintEnd_toStartOf="@+id/tv_email_about"
-            app:layout_constraintTop_toTopOf="@+id/tv_email_about"
-            app:layout_constraintVertical_bias="0.617">
+            app:layout_constraintBottom_toTopOf="@+id/img_about_logo"
+            app:layout_constraintStart_toStartOf="@+id/img_about_logo"
+            app:layout_constraintTop_toBottomOf="@+id/img_email_about">
 
         </ImageView>
 
@@ -70,37 +68,36 @@
             android:id="@+id/tv_telephone_about"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="20dp"
             android:text="(19) 9 9889-3843"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/img_telephone_about"
             app:layout_constraintStart_toEndOf="@+id/img_telephone_about"
-            app:layout_constraintTop_toTopOf="@+id/img_about_logo" />
+            app:layout_constraintTop_toTopOf="@+id/img_telephone_about" />
 
         <TextView
             android:id="@+id/tv_email_about"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginStart="20dp"
             android:text="contato@seviin.com.br"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/img_about_logo"
-            app:layout_constraintEnd_toStartOf="@+id/img_about_logo" />
+            app:layout_constraintBottom_toBottomOf="@+id/img_website_about"
+            app:layout_constraintStart_toEndOf="@+id/img_website_about"
+            app:layout_constraintTop_toTopOf="@+id/img_website_about" />
 
         <ImageView
             android:id="@+id/img_telephone_about"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/baseline_call_24"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_telephone_about"
-            app:layout_constraintStart_toStartOf="@+id/img_email_about"
-            app:layout_constraintTop_toTopOf="@+id/tv_telephone_about"
-            app:layout_constraintVertical_bias="0.441">
+            app:layout_constraintBottom_toTopOf="@+id/img_email_about"
+            app:layout_constraintStart_toStartOf="@+id/img_about_logo"
+            app:layout_constraintTop_toTopOf="parent">
 
         </ImageView>
 

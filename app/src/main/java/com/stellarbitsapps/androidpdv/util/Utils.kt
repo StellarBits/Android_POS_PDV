@@ -3,11 +3,13 @@ package com.stellarbitsapps.androidpdv.util
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Handler
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.android.sublcdlibrary.SubLcdHelper
@@ -115,13 +118,21 @@ class Utils {
                 text = if (isSangria) "Sangria" else "Calcular"
             }
 
+            // Create an custom TextView for dialog title
+            val titleTextView = TextView(fragment.requireContext())
+            titleTextView.text = "Digite o valor recebido (Total: R$ ${String.format("%.2f", tokenSum)})"
+            titleTextView.textSize = 14f // Font size in SP
+            titleTextView.setTextColor(ContextCompat.getColor(fragment.requireContext(), R.color.black)) // Text color
+            titleTextView.setTypeface(titleTextView.typeface, Typeface.BOLD) // Bold if needed
+            titleTextView.gravity = Gravity.CENTER // Text alignment
+
             alertDialogBuilder.setView(dialogLayout)
-            alertDialogBuilder.setTitle(
-                if (isSangria)
-                    "Digite o valor da sangria:"
-                else
-                    "Digite o valor recebido (Total: R$ ${String.format("%.2f", tokenSum)})"
-            )
+
+            if (isSangria)
+                alertDialogBuilder.setTitle("Digite o valor da sangria:")
+            else
+                alertDialogBuilder.setCustomTitle(titleTextView)
+
             if (!isSangria) {
                 alertDialogBuilder.setPositiveButton("OK") { _, _ -> }
             }

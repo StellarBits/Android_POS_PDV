@@ -82,6 +82,17 @@ class ReprintFragment : Fragment() {
 
         initRecyclerView()
 
+        val titleScrollView = binding.titleHorizontalScrollView
+        val contentScrollView = binding.contentHorizontalScrollView
+
+        titleScrollView.setOnScrollChangeListener { _, scrollX, _, _, _ ->
+            contentScrollView.scrollTo(scrollX, 0)
+        }
+
+        contentScrollView.setOnScrollChangeListener { _, scrollX, _, _, _ ->
+            titleScrollView.scrollTo(scrollX, 0)
+        }
+
         return binding.root
     }
 
