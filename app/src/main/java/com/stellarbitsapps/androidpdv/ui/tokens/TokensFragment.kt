@@ -235,6 +235,7 @@ class TokensFragment : Fragment() {
                 dialog.dismiss()
 
                 object : Thread() {
+                    @RequiresApi(Build.VERSION_CODES.N_MR1)
                     override fun run() {
                         try {
                             Utils.prepareAndPrintToken(
@@ -243,8 +244,7 @@ class TokensFragment : Fragment() {
                                 paymentMethod,
                                 tokenValues,
                                 selectedTokensList,
-                                fragment,
-                                printHelper
+                                fragment
                             )
 
                             // Update UI
@@ -276,6 +276,7 @@ class TokensFragment : Fragment() {
             alertDialog.show()
         } else {
             object : Thread() {
+                @RequiresApi(Build.VERSION_CODES.N_MR1)
                 override fun run() {
                     try {
                         Utils.prepareAndPrintToken(
@@ -284,8 +285,7 @@ class TokensFragment : Fragment() {
                             paymentMethod,
                             tokenValues,
                             selectedTokensList,
-                            fragment,
-                            printHelper
+                            fragment
                         )
 
                         // Update UI

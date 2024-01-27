@@ -3,7 +3,11 @@ package com.stellarbitsapps.androidpdv.util
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,6 +15,10 @@ import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import com.elotouch.AP80.sdkhelper.AP80PrintHelper
+import com.pos.device.printer.PrintCanvas
+import com.pos.device.printer.PrintTask
+import com.pos.device.printer.Printer
+import com.pos.device.printer.PrinterCallback
 import com.stellarbitsapps.androidpdv.R
 import com.stellarbitsapps.androidpdv.database.entity.LayoutSettings
 import com.stellarbitsapps.androidpdv.database.entity.Report
@@ -31,8 +39,7 @@ class PrintUtils {
             tokenValue: String,
             paymentMethod: String,
             tokenSettings: LayoutSettings,
-            fragment: TokensFragment,
-            printHelper: AP80PrintHelper
+            fragment: TokensFragment
         ) {
             val calendar = Calendar.getInstance()
             val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
@@ -52,37 +59,83 @@ class PrintUtils {
     
             val bitmap = createBitmapFromConstraintLayout(tokenLayout)
 
-            printHelper.printData("______________________________________", 30, 0, false, 1, 80, 1)
-            printHelper.printData(tokenSettings.header, 35, 0, false, 1, 80, 0)
-            printHelper.printData("VALE $tokenValue", 80, 0, false, 1, 80, 0)
-            printHelper.printBitmap(bitmap, 2, 80)
-            printHelper.printData("$date - ${Utils.getDeviceName()} - $paymentMethod", 28, 0, false, 0, 80, 0)
-            printHelper.printData(tokenSettings.footer, 40, 0, false, 0, 80, 0)
-            printHelper.printData("______________________________________", 30, 0, false, 1, 80, 1)
-            printSpace(2, printHelper)
-            printHelper.printStart()
-            printHelper.cutPaper(1)
-            printHelper.clean()
+            Printer.getInstance().reset()
+
+            val printTask = PrintTask()
+            printTask.gray = 200
+            val printCanvas = PrintCanvas()
+            val paint = Paint()
+            paint.color = Color.BLACK
+
+            paint.textSize = 20f
+            printCanvas.drawText("_________________________________________", paint)
+
+            paint.textSize = 22f
+            printCanvas.drawText(tokenSettings.header, paint)
+
+            paint.textSize = 28f
+            printCanvas.drawText("VALE $tokenValue", paint)
+
+            printCanvas.drawBitmap(bitmap, paint)
+
+            paint.textSize = 20f
+            printCanvas.drawText("$date - ${Utils.getDeviceName()} - $paymentMethod", paint)
+
+            paint.textSize = 22f
+            printCanvas.drawText(tokenSettings.footer, paint)
+
+            paint.textSize = 20f
+            printCanvas.drawText("_________________________________________", paint)
+
+            printTask.setPrintCanvas(printCanvas)
+
+            Printer.getInstance().startPrint(printTask) {
+                    p0, _ -> Log.i("TAG", "result $p0")
+            }
+
+            Printer.getInstance().reset()
         }
 
         @RequiresApi(Build.VERSION_CODES.N_MR1)
         @SuppressLint("SimpleDateFormat")
-        fun printSangria(sangria: Float, printHelper: AP80PrintHelper) {
+        fun printSangria(sangria: Float) {
             val calendar = Calendar.getInstance()
             val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
             val date = format.format(calendar.time)
 
+            val printTask = PrintTask()
+            printTask.gray = 200
+            val printCanvas = PrintCanvas()
+            val paint = Paint()
+            paint.color = Color.BLACK
+
             for (i in 1..2) {
-                printHelper.printData("Sangria: ${Utils.getDeviceName()}", 60, 1, false, 1, 80, 0)
-                printSpace(1, printHelper)
-                printHelper.printData("R$ ${String.format("%.2f", sangria)}", 50, 0, false, 0, 80, 0)
-                printHelper.printData(date, 50, 0, false, 0, 80, 0)
-                printSpace(4, printHelper)
-                printHelper.printData("ASS ..................................", 30, 0, false, 0, 80, 0)
-                printSpace(3, printHelper)
-                printHelper.printStart()
-                printHelper.cutPaper(1)
-                printHelper.clean()
+                Printer.getInstance().reset()
+
+                paint.textSize = 20f
+                printCanvas.drawText("_________________________________________", paint)
+
+                paint.textSize = 26f
+                printCanvas.drawText("             Sangria: ${Utils.getDeviceName()}", paint)
+
+                paint.textSize = 6f
+                printSpace(1, printCanvas, paint)
+
+                paint.textSize = 64f
+                printCanvas.drawText("R$ ${String.format("%.2f", sangria)}", paint)
+
+                paint.textSize = 24f
+                printCanvas.drawText(date, paint)
+
+                printSpace(2, printCanvas, paint)
+
+                printCanvas.drawText("ASS .....................................................", paint)
+
+                printTask.setPrintCanvas(printCanvas)
+
+                Printer.getInstance().startPrint(printTask) {
+                        p0, _ -> Log.i("TAG", "result $p0")
+                }
             }
         }
 
@@ -94,7 +147,6 @@ class PrintUtils {
             errors: List<ReportError>,
             finalDate: String,
             finalValue: Float,
-            printHelper: AP80PrintHelper,
             progressHUD: ProgressHUD,
         ) {
             // ------------------------- DATE ------------------------- //
@@ -147,66 +199,76 @@ class PrintUtils {
 
             // ------------------------- CALC ------------------------- //
 
-            printHelper.printData("______________________________________", 30, 0, false, 1, 80, 1)
-            printSpace(1, printHelper)
-            printHelper.printData(Utils.getDeviceName(), 70, 1, false, 1, 80, 1)
-            printSpace(1, printHelper)
-            printHelper.printData("Abertura:\n$initialDate - R$ ${String.format("%.2f", initialValue)}", 30, 0, false, 0, 80, 0)
-            printSpace(1, printHelper)
-            printHelper.printData("Fechamento:\n$finalDate - R$ ${String.format("%.2f", finalValue)}", 30, 0, false, 0, 80, 0)
-            printSpace(1, printHelper)
-            printHelper.printData("Saldo (Abertura + Vendas - Sangrias):\nR$ ${String.format("%.2f", balance)}", 30, 0, false, 0, 80, 0)
-            printHelper.printData("______________________________________", 30, 0, false, 1, 80, 1)
-            printSpace(1, printHelper)
-            printHelper.printData("R$ 1,00  - Qtde x $formattedTokensOneSold - Total R$: ${String.format("%.2f", totalTokensOne)}", 26, 0, false, 0, 80, 0)
-            printHelper.printData("R$ 2,00  - Qtde x $formattedTokensTwoSold - Total R$: ${String.format("%.2f", totalTokensTwo)}", 26, 0, false, 0, 80, 0)
-            printHelper.printData("R$ 4,00  - Qtde x $formattedTokensFourSold - Total R$: ${String.format("%.2f", totalTokensFour)}", 26, 0, false, 0, 80, 0)
-            printHelper.printData("R$ 5,00  - Qtde x $formattedTokensFiveSold - Total R$: ${String.format("%.2f", totalTokensFive)}", 26, 0, false, 0, 80, 0)
-            printHelper.printData("R$ 6,00  - Qtde x $formattedTokensSixSold - Total R$: ${String.format("%.2f", totalTokensSix)}", 26, 0, false, 0, 80, 0)
-            printHelper.printData("R$ 8,00  - Qtde x $formattedTokensEightSold - Total R$: ${String.format("%.2f", totalTokensEight)}", 26, 0, false, 0, 80, 0)
-            printHelper.printData("R$ 10,00 - Qtde x $formattedTokensTenSold - Total R$: ${String.format("%.2f", totalTokensTen)}", 26, 0, false, 0, 80, 0)
-            printSpace(1, printHelper)
-            printHelper.printData("Total de vendas R$: ${String.format("%.2f", tokensTotal)}", 30, 0, false, 0, 80, 1)
-            printHelper.printData("______________________________________", 30, 0, false, 1, 80, 1)
-            printSpace(1, printHelper)
-            printHelper.printData("Total Dinheiro ..... R$: ${String.format("%.2f", report.paymentCash)}", 30, 0, false, 0, 80, 0)
-            printHelper.printData("Total Pix .......... R$: ${String.format("%.2f", report.paymentPix)}", 30, 0, false, 0, 80, 0)
-            printHelper.printData("Total Débito ....... R$: ${String.format("%.2f", report.paymentDebit)}", 30, 0, false, 0, 80, 0)
-            printHelper.printData("Total Crédito ...... R$: ${String.format("%.2f", report.paymentCredit)}", 30, 0, false, 0, 80, 0)
-            printHelper.printData("Abertura do caixa .. R$: ${String.format("%.2f", report.initialCash)}", 30, 0, false, 0, 80, 0)
-            printHelper.printData("Total Geral ........ R$: ${String.format("%.2f", report.paymentCash + report.paymentPix + report.paymentDebit + report.paymentCredit + report.initialCash)}", 30, 0, false, 0, 80, 0)
-            printHelper.printData("______________________________________", 30, 0, false, 1, 80, 1)
+            Printer.getInstance().reset()
+            val printTask = PrintTask()
+            printTask.gray = 200
+            val printCanvas = PrintCanvas()
+            val paint = Paint()
+            paint.color = Color.BLACK
+            paint.textSize = 22f
+
+            printCanvas.drawText("______________________________________", paint)
+            printCanvas.drawText(Utils.getDeviceName(), paint)
+            printSpace(1, printCanvas, paint)
+            printCanvas.drawText("Abertura:\n$initialDate - R$ ${String.format("%.2f", initialValue)}", paint)
+            printCanvas.drawText("Fechamento:\n$finalDate - R$ ${String.format("%.2f", finalValue)}", paint)
+            printCanvas.drawText("Saldo (Abertura + Vendas - Sangrias):\nR$ ${String.format("%.2f", balance)}", paint)
+            printCanvas.drawText("______________________________________", paint)
+            printCanvas.drawText("R$ 1,00   - Qtde x $formattedTokensOneSold - Total R$: ${String.format("%.2f", totalTokensOne)}", paint)
+            printCanvas.drawText("R$ 2,00   - Qtde x $formattedTokensTwoSold - Total R$: ${String.format("%.2f", totalTokensTwo)}", paint)
+            printCanvas.drawText("R$ 4,00   - Qtde x $formattedTokensFourSold - Total R$: ${String.format("%.2f", totalTokensFour)}", paint)
+            printCanvas.drawText("R$ 5,00   - Qtde x $formattedTokensFiveSold - Total R$: ${String.format("%.2f", totalTokensFive)}", paint)
+            printCanvas.drawText("R$ 6,00   - Qtde x $formattedTokensSixSold - Total R$: ${String.format("%.2f", totalTokensSix)}", paint)
+            printCanvas.drawText("R$ 8,00   - Qtde x $formattedTokensEightSold - Total R$: ${String.format("%.2f", totalTokensEight)}", paint)
+            printCanvas.drawText("R$ 10,00 - Qtde x $formattedTokensTenSold - Total R$: ${String.format("%.2f", totalTokensTen)}", paint)
+
+            paint.typeface = Typeface.DEFAULT_BOLD
+            printCanvas.drawText("Total de vendas R$: ${String.format("%.2f", tokensTotal)}", paint)
+
+            paint.typeface = Typeface.DEFAULT
+            printCanvas.drawText("______________________________________", paint)
+            printCanvas.drawText("Total Dinheiro ..... R$: ${String.format("%.2f", report.paymentCash)}", paint)
+            printCanvas.drawText("Total Pix .......... R$: ${String.format("%.2f", report.paymentPix)}", paint)
+            printCanvas.drawText("Total Débito ....... R$: ${String.format("%.2f", report.paymentDebit)}", paint)
+            printCanvas.drawText("Total Crédito ...... R$: ${String.format("%.2f", report.paymentCredit)}", paint)
+            printCanvas.drawText("Abertura do caixa .. R$: ${String.format("%.2f", report.initialCash)}", paint)
+
+            paint.typeface = Typeface.DEFAULT_BOLD
+            printCanvas.drawText("Total Geral ........ R$: ${String.format("%.2f", report.paymentCash + report.paymentPix + report.paymentDebit + report.paymentCredit + report.initialCash)}", paint)
+
+            paint.typeface = Typeface.DEFAULT
+            printCanvas.drawText("______________________________________", paint)
 
             // Sangria
-            printSpace(1, printHelper)
-            printHelper.printData("Sangria:", 30, 0, false, 0, 80, 0)
+            printCanvas.drawText("Sangria:", paint)
 
             sangrias.forEach {
                 val date = format.format(it.date)
                 val text = "$date - R$: ${String.format("%.2f", it.sangria)}"
-                printHelper.printData(text, 30, 0, false, 0, 80, 0)
+                printCanvas.drawText(text, paint)
             }
 
-            printSpace(1, printHelper)
-            printHelper.printData("Total das sangrias R$: ${String.format("%.2f", sangriaSum)}", 30, 0, false, 0, 80, 0)
+            paint.typeface = Typeface.DEFAULT_BOLD
+            printCanvas.drawText("Total das sangrias R$: ${String.format("%.2f", sangriaSum)}", paint)
 
             // Errors
-            printSpace(1, printHelper)
-            printHelper.printData("Erros reportados:", 30, 0, false, 0, 80, 0)
+            paint.typeface = Typeface.DEFAULT
+            printCanvas.drawText("Erros reportados:", paint)
 
             errors.forEach {
                 val date = format.format(it.date)
                 val text = "$date - R$: ${String.format("%.2f", it.error)}"
-                printHelper.printData(text, 30, 0, false, 0, 80, 0)
+                printCanvas.drawText(text, paint)
             }
 
-            printSpace(1, printHelper)
-            printHelper.printData("Total dos erros reportados R$: ${String.format("%.2f", errorSum)}", 30, 0, false, 0, 80, 0)
+            paint.typeface = Typeface.DEFAULT_BOLD
+            printCanvas.drawText("Total dos erros reportados R$: ${String.format("%.2f", errorSum)}", paint)
 
-            printSpace(3, printHelper)
-            printHelper.printStart()
-            printHelper.cutPaper(1)
-            printHelper.clean()
+            printTask.setPrintCanvas(printCanvas)
+
+            Printer.getInstance().startPrint(printTask) {
+                    p0, _ -> Log.i("TAG", "result $p0")
+            }
 
             withContext(Dispatchers.IO) {
                 Thread.sleep(2500)
@@ -231,7 +293,7 @@ class PrintUtils {
             return constraintLayout.drawingCache
         }
     
-        private fun printSpace(spaceSize: Int, printHelper: AP80PrintHelper) {
+        private fun printSpace(spaceSize: Int, printCanvas: PrintCanvas, paint: Paint) {
             if (spaceSize < 0) {
                 return
             }
@@ -239,7 +301,7 @@ class PrintUtils {
             for (i in 0 until spaceSize) {
                 strSpace.append("\n")
             }
-            printHelper.printData(strSpace.toString(), 32, 0, false, 1, 80, 0)
+            printCanvas.drawText(strSpace.toString(), paint)
         }
     }
 }

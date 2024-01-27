@@ -3,6 +3,7 @@ package com.stellarbitsapps.androidpdv.ui.reprint
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -68,13 +69,13 @@ class ReprintFragment : Fragment() {
             progressHUD.show()
 
             lifecycleScope.launch {
+                Log.i("JAO", "FinalDate: ${it.report.finalDate}")
                 PrintUtils.printReport(
                     report = it.report,
                     sangrias = it.sangria,
                     errors = it.error,
-                    finalDate = SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(it.report.finalDate),
+                    finalDate = SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(it.report.finalDate ?: 0),
                     it.report.finalCash,
-                    printHelper,
                     progressHUD
                 )
             }

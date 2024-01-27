@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/cardview_dark_background"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,11 +53,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/operational_right_panel"
-        android:layout_width="350dp"
-        android:layout_height="280dp"
-        android:paddingBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/cardview_dark_background"
         android:orientation="vertical"
+        android:paddingBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -89,54 +89,58 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_total_title" />
 
-        <GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:padding="2dp"
+        <Button
+            android:id="@+id/bt_cash"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:layout_marginVertical="8dp"
+            android:text="Dinheiro"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toTopOf="@+id/bt_error"
+            app:layout_constraintEnd_toStartOf="@+id/bt_pix"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tota_value" />
+
+        <Button
+            android:id="@+id/bt_pix"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:text="Pix"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toTopOf="@+id/bt_error"
+            app:layout_constraintEnd_toStartOf="@+id/bt_credit"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/bt_cash"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tota_value" />
+
+        <Button
+            android:id="@+id/bt_credit"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:text="Crédito"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toTopOf="@+id/bt_error"
+            app:layout_constraintEnd_toStartOf="@+id/bt_debit"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/bt_pix"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tota_value" />
+
+        <Button
+            android:id="@+id/bt_debit"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:text="Débito"
+            android:textSize="8sp"
             app:layout_constraintBottom_toTopOf="@+id/bt_error"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tota_value">
-
-            <Button
-                android:id="@+id/bt_cash"
-                android:layout_width="100dp"
-                android:layout_height="55dp"
-                android:layout_marginEnd="5dp"
-                android:backgroundTint="@android:color/holo_green_dark"
-                android:text="Dinheiro"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/bt_pix"
-                android:layout_width="100dp"
-                android:layout_height="55dp"
-                android:layout_marginStart="5dp"
-                android:backgroundTint="@android:color/holo_green_dark"
-                android:text="Pix"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/bt_credit"
-                android:layout_width="100dp"
-                android:layout_height="55dp"
-                android:layout_marginEnd="5dp"
-                android:backgroundTint="@android:color/holo_green_dark"
-                android:text="Crédito"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/bt_debit"
-                android:layout_width="100dp"
-                android:layout_height="55dp"
-                android:layout_marginStart="5dp"
-                android:backgroundTint="@android:color/holo_green_dark"
-
-                android:text="Débito"
-                android:textSize="12sp" />
-
-        </GridLayout>
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/bt_credit"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tota_value" />
 
         <Button
             android:id="@+id/bt_change"

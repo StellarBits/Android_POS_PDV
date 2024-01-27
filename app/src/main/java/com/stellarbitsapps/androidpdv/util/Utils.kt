@@ -22,7 +22,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import com.android.sublcdlibrary.SubLcdHelper
 import com.elotouch.AP80.sdkhelper.AP80PrintHelper
 import com.stellarbitsapps.androidpdv.R
 import com.stellarbitsapps.androidpdv.database.entity.LayoutSettings
@@ -93,7 +92,7 @@ class Utils {
                 }
 
                 if (isSangria) {
-                    PrintUtils.printSangria(valueEntered, printHelper)
+                    PrintUtils.printSangria(valueEntered)
                     viewModel.insertSangria(valueEntered, MainActivity.currentReportId)
                 } else {
                     val cashChange = valueEntered - tokenSum
@@ -161,14 +160,14 @@ class Utils {
             return current
         }
 
+        @RequiresApi(Build.VERSION_CODES.N_MR1)
         fun prepareAndPrintToken(
             viewModel: TokensViewModel,
             tokenSettings: LayoutSettings,
             paymentMethod: String,
             tokenValues: Array<Float>,
             selectedTokensList: ArrayList<Tokens>,
-            fragment: TokensFragment,
-            printHelper: AP80PrintHelper
+            fragment: TokensFragment
         ) {
             var tokenPaymentValues = tokenValues
 
@@ -207,45 +206,11 @@ class Utils {
                 auxTokensList.forEach { tokensPair ->
                     if (tokensPair.first > 0) {
                         for (i in 1..tokensPair.first) {
-                            PrintUtils.printToken(tokensPair.second, paymentMethod, tokenSettings, fragment, printHelper)
+                            PrintUtils.printToken(tokensPair.second, paymentMethod, tokenSettings, fragment)
                             Thread.sleep(1250)
                         }
                     }
                 }
-            }
-        }
-
-        fun showInSubDisplay(subLcdHelper: SubLcdHelper, fragment: InitialCashFragment, layoutSettings: LayoutSettings) {
-
-            if (layoutSettings.header.isNotEmpty() && layoutSettings.image.isNotEmpty()) {
-
-                val myBitmap = BitmapFactory.decodeStream(
-                    fragment.requireActivity().contentResolver.openInputStream(layoutSettings.image.toUri())
-                )
-
-                val subDisplayLayout =
-                    fragment.layoutInflater.inflate(R.layout.sub_display_layout, null)
-
-                subDisplayLayout.findViewById<TextView>(R.id.tv_sub_display_header).text =
-                    layoutSettings.header
-                subDisplayLayout.findViewById<ImageView>(R.id.img_sub_display_image)
-                    .setImageBitmap(myBitmap)
-
-                val constraintLayout =
-                    subDisplayLayout.findViewById<View>(R.id.sub_display_layout) as ConstraintLayout
-
-                constraintLayout.isDrawingCacheEnabled = true
-
-                constraintLayout.measure(
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                )
-
-                constraintLayout.layout(0, 0, constraintLayout.measuredWidth, constraintLayout.measuredHeight)
-                constraintLayout.buildDrawingCache(true)
-
-                val bmp = subLcdHelper.doRotateBitmap(constraintLayout.drawingCache, 90f)
-                subLcdHelper.sendBitmap(bmp)
             }
         }
 

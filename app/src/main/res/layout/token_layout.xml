@@ -4,30 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/token_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/tv_token_value"
-        android:layout_width="240dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:paddingHorizontal="10dp"
         android:background="@color/cardview_dark_background"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="53sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/img_token_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="R$ 2,00" />
 
     <ImageView
         android:id="@+id/img_token_image"
-        android:layout_width="100dp"
-        android:layout_height="145dp"
-        android:layout_marginEnd="10dp"
+        android:layout_width="55dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="20dp"
         android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_token_value"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_launcher_foreground" />
 

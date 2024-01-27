@@ -113,7 +113,6 @@ class FinalCashFragment : Fragment() {
                     it.error,
                     finalDate,
                     finalValue,
-                    printHelper,
                     progressHUD
                 )
             }
