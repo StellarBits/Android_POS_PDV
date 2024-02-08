@@ -4,20 +4,15 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.elotouch.AP80.sdkhelper.AP80PrintHelper
-import com.serenegiant.utils.UIThreadHelper.runOnUiThread
 import com.stellarbitsapps.androidpdv.R
 import com.stellarbitsapps.androidpdv.application.AndroidPdvApplication
 import com.stellarbitsapps.androidpdv.database.entity.LayoutSettings
@@ -49,8 +44,6 @@ class TokensFragment : Fragment() {
         FragmentTokensBinding.inflate(layoutInflater)
     }
 
-    private lateinit var printHelper: AP80PrintHelper
-
     private lateinit var progressHUD: ProgressHUD
 
     private lateinit var tokensAdapter: TokensAdapter
@@ -77,9 +70,6 @@ class TokensFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        printHelper = AP80PrintHelper.getInstance()
-        printHelper.initPrint(requireContext())
-
         initRecyclerView()
 
         loadTokenLayoutSettings()
@@ -178,11 +168,11 @@ class TokensFragment : Fragment() {
         }
 
         binding.btChange.setOnClickListener {
-            Utils.showCashDialog(this, viewModel, false, if (tokenSum == 0f) previousTokenSum else tokenSum, printHelper)
+            Utils.showCashDialog(this, viewModel, false, if (tokenSum == 0f) previousTokenSum else tokenSum)
         }
 
         binding.btSangria.setOnClickListener {
-            Utils.showCashDialog(this, viewModel, true, tokenSum, printHelper)
+            Utils.showCashDialog(this, viewModel, true, tokenSum)
         }
 
         return binding.root
@@ -248,7 +238,7 @@ class TokensFragment : Fragment() {
                             )
 
                             // Update UI
-                            runOnUiThread {
+                            requireActivity().runOnUiThread {
                                 clearFields()
                                 progressHUD.dismiss()
                             }
@@ -289,7 +279,7 @@ class TokensFragment : Fragment() {
                         )
 
                         // Update UI
-                        runOnUiThread {
+                        requireActivity().runOnUiThread {
                             clearFields()
                             progressHUD.dismiss()
                         }

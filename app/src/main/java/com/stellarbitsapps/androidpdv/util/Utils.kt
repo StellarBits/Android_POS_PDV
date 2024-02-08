@@ -15,21 +15,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import com.elotouch.AP80.sdkhelper.AP80PrintHelper
 import com.stellarbitsapps.androidpdv.R
 import com.stellarbitsapps.androidpdv.database.entity.LayoutSettings
 import com.stellarbitsapps.androidpdv.database.entity.Report
 import com.stellarbitsapps.androidpdv.database.entity.Tokens
 import com.stellarbitsapps.androidpdv.ui.MainActivity
 import com.stellarbitsapps.androidpdv.ui.MainActivity.Companion.mainActivityContentResolver
-import com.stellarbitsapps.androidpdv.ui.initialcash.InitialCashFragment
 import com.stellarbitsapps.androidpdv.ui.tokens.TokensFragment
 import com.stellarbitsapps.androidpdv.ui.tokens.TokensViewModel
 import java.text.NumberFormat
@@ -43,8 +38,7 @@ class Utils {
             fragment: Fragment,
             viewModel: TokensViewModel,
             isSangria: Boolean,
-            tokenSum: Float,
-            printHelper: AP80PrintHelper
+            tokenSum: Float
         ) {
             val inflater = LayoutInflater.from(fragment.requireContext())
             val dialogLayout: View =

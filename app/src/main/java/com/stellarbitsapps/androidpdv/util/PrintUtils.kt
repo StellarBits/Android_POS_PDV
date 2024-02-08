@@ -14,11 +14,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
-import com.elotouch.AP80.sdkhelper.AP80PrintHelper
 import com.pos.device.printer.PrintCanvas
 import com.pos.device.printer.PrintTask
 import com.pos.device.printer.Printer
-import com.pos.device.printer.PrinterCallback
 import com.stellarbitsapps.androidpdv.R
 import com.stellarbitsapps.androidpdv.database.entity.LayoutSettings
 import com.stellarbitsapps.androidpdv.database.entity.Report

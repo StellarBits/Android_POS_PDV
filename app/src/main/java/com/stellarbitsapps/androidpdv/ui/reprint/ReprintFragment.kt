@@ -13,8 +13,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.elotouch.AP80.sdkhelper.AP80PrintHelper
-import com.serenegiant.utils.UIThreadHelper
 import com.stellarbitsapps.androidpdv.R
 import com.stellarbitsapps.androidpdv.application.AndroidPdvApplication
 import com.stellarbitsapps.androidpdv.databinding.FragmentReprintBinding
@@ -42,8 +40,6 @@ class ReprintFragment : Fragment() {
         FragmentReprintBinding.inflate(layoutInflater)
     }
 
-    private lateinit var printHelper: AP80PrintHelper
-
     private lateinit var progressHUD: ProgressHUD
 
     @SuppressLint("SimpleDateFormat")
@@ -52,8 +48,6 @@ class ReprintFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        printHelper = AP80PrintHelper.getInstance()
-        printHelper.initPrint(requireContext())
 
         binding.btClose.setOnClickListener {
             findNavController().navigate(R.id.initialCashFragment)
